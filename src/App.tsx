@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import './App.css'
+import TodoInput from './components/TodoInput'
+import TodoRes from './components/TodoRes'
+import { ITypes } from './types/ITypes';
 
 function App() {
+  const [todo, setTodo] = useState<string>("");
+
+  const [todos, setTodos] = useState<ITypes[]>([])
+
+  const addFunct = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (todo.length > 0) {
+      setTodos(prev => ([...prev, { todo: todo, id: todos.length + 1, isColor: false }]))
+      setTodo('')
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    < div >
+      <TodoInput addFunct={addFunct} todo={todo} setTodo={setTodo} />
+      <TodoRes todos={todos} setTodos={setTodos} />
+    </div >
+  )
 }
 
-export default App;
+export default App
